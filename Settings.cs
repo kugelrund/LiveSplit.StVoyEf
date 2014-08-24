@@ -8,9 +8,7 @@ namespace LiveSplit.StVoyEf
     partial class Settings : UserControl
     {
         private readonly GameEvent[] eventList;
-        private Dictionary<string, int> order;
-        private List<GameEvent> availEvents;
-        private List<GameEvent> usedEvents;
+        private readonly Dictionary<string, int> order;
 
         public bool PauseGameTime { get; private set; }
 
@@ -25,63 +23,95 @@ namespace LiveSplit.StVoyEf
                 order.Add(eventList[i].Id, i);
             }
 
-            availEvents = new List<GameEvent>(eventList);
-            usedEvents = new List<GameEvent>();
+            lstAvailEvents.Items.AddRange(eventList);
             PauseGameTime = false;
-
-            bindingUsedEvents.DataSource = usedEvents;
-            bindingAvailEvents.DataSource = availEvents;
         }
 
         public GameEvent[] GetEventList()
         {
-            List<GameEvent> eventList = new List<GameEvent>(usedEvents);
-            eventList.Add(new EmptyEvent());
-            return eventList.ToArray();
+            int length = lstUsedEvents.Items.Count;
+            GameEvent[] gameEvents = new GameEvent[length + 1];
+            for (int i = 0; i < length; ++i)
+            {
+                gameEvents[i] = (lstUsedEvents.Items[i] as GameEvent);
+            }
+            gameEvents[length] = new EmptyEvent();
+
+            return gameEvents;
+        }
+
+        private int GetEventPosition(ListBox.ObjectCollection collection, GameEvent gameEvent)
+        {
+            int top = collection.Count;
+            if (top == 0) return 0;
+            int bottom = 0;
+            int mid;
+            
+            while (bottom + 1 != top)
+            {
+                mid = (bottom + top) / 2;
+                if (gameEvent.CompareTo(collection[mid] as GameEvent) < 0)
+                {
+                    top = mid;
+                }
+                else
+                {
+                    bottom = mid;
+                }
+            }
+
+            if (gameEvent.CompareTo(collection[bottom] as GameEvent) > 0)
+            {
+                return top;
+            }
+            else
+            {
+                return bottom;
+            }
+        }
+
+        private void SwitchSelectedEvents(ListBox source, ListBox destination)
+        {
+            source.BeginUpdate();
+            destination.BeginUpdate();
+            destination.SelectedIndices.Clear();
+            int insertPosition;
+            while (source.SelectedItems.Count > 0)
+            {
+                insertPosition = GetEventPosition(destination.Items, source.SelectedItems[0] as GameEvent);
+                destination.Items.Insert(insertPosition, source.SelectedItems[0]);
+                destination.SelectedIndices.Add(insertPosition);
+                source.Items.RemoveAt(source.SelectedIndices[0]);
+            }
+            source.EndUpdate();
+            destination.EndUpdate();
+        }
+
+        private void FillEvents(ListBox fill, ListBox empty)
+        {
+            empty.Items.Clear();
+            fill.Items.Clear();
+            fill.Items.AddRange(eventList);
         }
 
         private void btnAddEvent_Click(object sender, EventArgs e)
         {
-            foreach (Object item in lstAvailEvents.SelectedItems)
-            {
-                availEvents.Remove((GameEvent) item);
-                usedEvents.Add((GameEvent) item);
-            }
-            usedEvents.Sort();
-            availEvents.Sort();
-            bindingUsedEvents.ResetBindings(true);
-            bindingAvailEvents.ResetBindings(true);
+            SwitchSelectedEvents(lstAvailEvents, lstUsedEvents);
         }
 
         private void btnRemoveEvent_Click(object sender, EventArgs e)
         {
-            foreach (Object item in lstUsedEvents.SelectedItems)
-            {
-                usedEvents.Remove((GameEvent) item);
-                availEvents.Add((GameEvent) item);
-            }
-            usedEvents.Sort();
-            availEvents.Sort();
-            bindingUsedEvents.ResetBindings(true);
-            bindingAvailEvents.ResetBindings(true);
+            SwitchSelectedEvents(lstUsedEvents, lstAvailEvents);
         }
 
         private void btnAllEvents_Click(object sender, EventArgs e)
         {
-            usedEvents.Clear();
-            usedEvents.AddRange(eventList);
-            availEvents.Clear();
-            bindingUsedEvents.ResetBindings(true);
-            bindingAvailEvents.ResetBindings(true);
+            FillEvents(lstUsedEvents, lstAvailEvents);
         }
 
         private void btnNoEvents_Click(object sender, EventArgs e)
         {
-            availEvents.Clear();
-            availEvents.AddRange(eventList);
-            usedEvents.Clear();
-            bindingUsedEvents.ResetBindings(true);
-            bindingAvailEvents.ResetBindings(true);
+            FillEvents(lstAvailEvents, lstUsedEvents);
         }
 
         private void chkPauseGameTime_CheckedChanged(object sender, EventArgs e)
@@ -95,7 +125,7 @@ namespace LiveSplit.StVoyEf
 
             XmlElement usedEventsNode = document.CreateElement("usedEvents");
             XmlElement eventNode;
-            foreach (GameEvent gameEvent in usedEvents)
+            foreach (GameEvent gameEvent in lstUsedEvents.Items)
             {
                 eventNode = document.CreateElement("event");
                 eventNode.InnerText = gameEvent.Id;
@@ -114,18 +144,22 @@ namespace LiveSplit.StVoyEf
         {
             if (settings["usedEvents"] != null)
             {
-                usedEvents.Clear();
+                FillEvents(lstAvailEvents, lstUsedEvents);
+                lstAvailEvents.BeginUpdate();
+                lstUsedEvents.BeginUpdate();
+                int currOrder;
+                int i = 0;
                 foreach (XmlNode node in settings["usedEvents"].ChildNodes)
                 {
-                    int id;
-                    if (order.TryGetValue(node.InnerText, out id))
+                    if (order.TryGetValue(node.InnerText, out currOrder))
                     {
-                        usedEvents.Add(eventList[id]);
-                        availEvents.Remove(eventList[id]);
+                        lstUsedEvents.Items.Add(eventList[currOrder]);
+                        lstAvailEvents.Items.RemoveAt(currOrder - i);
+                        ++i;
                     }
                 }
-                bindingUsedEvents.ResetBindings(true);
-                bindingAvailEvents.ResetBindings(true);
+                lstAvailEvents.EndUpdate();
+                lstUsedEvents.EndUpdate();
             }
 
             bool pauseGameTime;

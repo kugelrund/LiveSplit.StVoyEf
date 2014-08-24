@@ -28,11 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.lstUsedEvents = new System.Windows.Forms.ListBox();
-            this.bindingUsedEvents = new System.Windows.Forms.BindingSource(this.components);
             this.lstAvailEvents = new System.Windows.Forms.ListBox();
-            this.bindingAvailEvents = new System.Windows.Forms.BindingSource(this.components);
             this.lblUsedEvents = new System.Windows.Forms.Label();
             this.btnAllEvents = new System.Windows.Forms.Button();
             this.btnNoEvents = new System.Windows.Forms.Button();
@@ -40,13 +37,10 @@
             this.btnRemoveEvent = new System.Windows.Forms.Button();
             this.lblAvailEvents = new System.Windows.Forms.Label();
             this.chkPauseGameTime = new System.Windows.Forms.CheckBox();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingUsedEvents)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingAvailEvents)).BeginInit();
             this.SuspendLayout();
             // 
             // lstUsedEvents
             // 
-            this.lstUsedEvents.DataSource = this.bindingUsedEvents;
             this.lstUsedEvents.FormattingEnabled = true;
             this.lstUsedEvents.Location = new System.Drawing.Point(13, 23);
             this.lstUsedEvents.Name = "lstUsedEvents";
@@ -56,7 +50,6 @@
             // 
             // lstAvailEvents
             // 
-            this.lstAvailEvents.DataSource = this.bindingAvailEvents;
             this.lstAvailEvents.FormattingEnabled = true;
             this.lstAvailEvents.Location = new System.Drawing.Point(254, 23);
             this.lstAvailEvents.Name = "lstAvailEvents";
@@ -149,8 +142,6 @@
             this.Name = "Settings";
             this.Padding = new System.Windows.Forms.Padding(7);
             this.Size = new System.Drawing.Size(459, 241);
-            ((System.ComponentModel.ISupportInitialize)(this.bindingUsedEvents)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingAvailEvents)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -166,8 +157,6 @@
         private System.Windows.Forms.Button btnAddEvent;
         private System.Windows.Forms.Button btnRemoveEvent;
         private System.Windows.Forms.Label lblAvailEvents;
-        private System.Windows.Forms.BindingSource bindingUsedEvents;
-        private System.Windows.Forms.BindingSource bindingAvailEvents;
         private System.Windows.Forms.CheckBox chkPauseGameTime;
     }
 }
