@@ -35,7 +35,7 @@ namespace LiveSplit.StVoyEf
         {
             model = new TimerModel() { CurrentState = state };
             eventList = settings.GetEventList();
-            settings.HandleDestroyed += settings_Updated;
+            settings.EventsChanged += settings_EventsChanged;
         }
 
         public void Update(UI.IInvalidator invalidator, Model.LiveSplitState state, float width, float height, UI.LayoutMode mode)
@@ -70,7 +70,7 @@ namespace LiveSplit.StVoyEf
             }
         }
 
-        private void settings_Updated(object sender, EventArgs e)
+        private void settings_EventsChanged(object sender, EventArgs e)
         {
             eventList = settings.GetEventList();
         }
@@ -104,7 +104,7 @@ namespace LiveSplit.StVoyEf
 
             if (disposing)
             {
-                settings.HandleDestroyed -= settings_Updated;
+                settings.EventsChanged -= settings_EventsChanged;
                 settings.Dispose();
             }
 

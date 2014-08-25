@@ -142,6 +142,7 @@
             this.Name = "Settings";
             this.Padding = new System.Windows.Forms.Padding(7);
             this.Size = new System.Drawing.Size(459, 241);
+            this.HandleDestroyed += new System.EventHandler(this.settings_HandleDestroyed);
             this.ResumeLayout(false);
             this.PerformLayout();
 

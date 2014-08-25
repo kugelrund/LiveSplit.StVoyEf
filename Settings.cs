@@ -12,6 +12,16 @@ namespace LiveSplit.StVoyEf
 
         public bool PauseGameTime { get; private set; }
 
+        private bool eventsChanged = false;
+        public event EventHandler EventsChanged;
+        protected virtual void OnChanged(EventArgs e)
+        {
+            if (EventsChanged != null)
+            {
+                EventsChanged(this, e);
+            }
+        }
+
         public Settings()
         {
             InitializeComponent();
@@ -85,6 +95,7 @@ namespace LiveSplit.StVoyEf
             }
             source.EndUpdate();
             destination.EndUpdate();
+            eventsChanged = true;
         }
 
         private void FillEvents(ListBox fill, ListBox empty)
@@ -92,6 +103,7 @@ namespace LiveSplit.StVoyEf
             empty.Items.Clear();
             fill.Items.Clear();
             fill.Items.AddRange(eventList);
+            eventsChanged = true;
         }
 
         private void btnAddEvent_Click(object sender, EventArgs e)
@@ -117,6 +129,15 @@ namespace LiveSplit.StVoyEf
         private void chkPauseGameTime_CheckedChanged(object sender, EventArgs e)
         {
             PauseGameTime = chkPauseGameTime.Checked;
+        }
+        
+        private void settings_HandleDestroyed(object sender, EventArgs e)
+        {
+            if (eventsChanged)
+            {
+                eventsChanged = false;
+                OnChanged(EventArgs.Empty);
+            }
         }
 
         public XmlNode GetSettings(XmlDocument document)
@@ -160,6 +181,9 @@ namespace LiveSplit.StVoyEf
                 }
                 lstAvailEvents.EndUpdate();
                 lstUsedEvents.EndUpdate();
+
+                eventsChanged = false;
+                OnChanged(EventArgs.Empty);
             }
 
             bool pauseGameTime;
