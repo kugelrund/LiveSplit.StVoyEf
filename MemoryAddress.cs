@@ -28,7 +28,7 @@ namespace LiveSplit.StVoyEf
             SafeNativeMethods.ReadProcessMemory(p.Handle, address, buffer, maxLength, out readBytes);
 
             int lastIndex = 0;
-            while (lastIndex < maxLength && buffer[lastIndex] != 0)
+            while (lastIndex < maxLength && buffer[lastIndex] != 0 && buffer[lastIndex] != 46) // "." in ASCII is 46
             {
                 lastIndex += 1;
             }

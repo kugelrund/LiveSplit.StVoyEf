@@ -16,12 +16,14 @@ namespace LiveSplit.StVoyEf
         // 8 - videos when starting the game
         private static readonly MemoryAddress gameStateAddress = new MemoryAddress(0x4B9E78);
 
-        private static readonly MemoryAddress mapAddress = new MemoryAddress(0x20284A98);
+        private static readonly MemoryAddress mapAddress = new MemoryAddress(0x5B709D);
 
-        private static readonly MemoryAddress vorsothHealthAddress = new MemoryAddress(0x2028C2B4);
+        private static readonly DeepPointer vorsothHealthAddress = new DeepPointer(0x641C28, 0x7A04);
 
+        // not used yet
+        //private static readonly DeepPointer inCinematicAddress = new DeepPointer(0x6992E8, new int[] { 0x1748c, 0 });
         // might implement if desired
-        //private static readonly DeepPointer gameTimer = new DeepPointer("stvoy.exe", 0x641C14, 0x510);
+        //private static readonly DeepPointer gameTimerAddress = new DeepPointer("stvoy.exe", 0x641C14, 0x510);
 
 
         // longest map name is forgeboss
@@ -33,7 +35,15 @@ namespace LiveSplit.StVoyEf
         public int CurrGameState { get; private set; }
         public string PrevMap { get; private set; }
         public string CurrMap { get; private set; }
-        public int CurrVorsothHealth { get { return vorsothHealthAddress.Deref(gameProcess); } }
+        public int CurrVorsothHealth 
+        { 
+            get 
+            {
+                int vorsothHealth;
+                vorsothHealthAddress.Deref<int>(gameProcess, out vorsothHealth);
+                return vorsothHealth; 
+            } 
+        }
         public bool MapChanged { get; private set; }
         public bool InGame { get; private set; }
 
