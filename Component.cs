@@ -47,6 +47,7 @@ namespace LiveSplit.StVoyEf
                 {
                     if (state.CurrentPhase == TimerPhase.NotRunning)
                     {
+                        state.IsGameTimePaused = false;
                         model.Start();
                     }
                     else
