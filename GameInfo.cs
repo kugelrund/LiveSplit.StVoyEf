@@ -168,8 +168,6 @@ namespace LiveSplit.StVoyEf
                     new FinishedMapEvent("train"),
                     new LoadedMapEvent("dn6"),
                     new FinishedMapEvent("dn6"),
-                    new LoadedMapEvent("dn7"),
-                    new FinishedMapEvent("dn7"),
                     new LoadedMapEvent("dn8"),
                     new FinishedMapEvent("dn8"),
                     new LoadedMapEvent("voy16"),
