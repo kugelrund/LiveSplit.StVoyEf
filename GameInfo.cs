@@ -278,29 +278,22 @@ namespace LiveSplit.StVoyEf
 
     class VorsothDeadEvent : GameEvent
     {
-        private readonly LoadedMapEvent mapForgebossEvent = new LoadedMapEvent("forgeboss");
-        private bool mapIsForgeboss = false;
         private int prevVorsothHealth = -1;
 
         public override string Id { get { return "vorsoth_dead"; } }
 
         public override bool HasOccured(GameInfo info)
         {
-            if (mapIsForgeboss && !info.MapChanged)
+            if (info.CurrMap == "forgeboss")
             {
                 int vorsothHealth = info.CurrVorsothHealth;
                 if (prevVorsothHealth == 1 && vorsothHealth == 0)
                 {
-                    mapIsForgeboss = false;
                     prevVorsothHealth = -1;
                     return true;
                 }
                 
                 prevVorsothHealth = info.CurrVorsothHealth;
-            }
-            else
-            {
-                mapIsForgeboss = mapForgebossEvent.HasOccured(info);
             }
 
             return false;
