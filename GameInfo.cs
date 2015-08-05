@@ -14,16 +14,12 @@ namespace LiveSplit.StVoyEf
         // 6 - end loading state (directly after loading)
         // 7 - in game
         // 8 - videos when starting the game
-        private static readonly MemoryAddress gameStateAddress = new MemoryAddress(0x4B9E78);
+        private static readonly DeepPointer gameStateAddress = new DeepPointer(0xB9E78);
 
-        private static readonly MemoryAddress mapAddress = new MemoryAddress(0x5B709D);
+        private static readonly DeepPointer mapAddress = new DeepPointer(0x1B709D);
 
         private static readonly DeepPointer vorsothHealthAddress = new DeepPointer(0x641C28, 0x7A04);
 
-        // not used yet
-        //private static readonly DeepPointer inCinematicAddress = new DeepPointer(0x6992E8, new int[] { 0x1748c, 0 });
-        // might implement if desired
-        //private static readonly DeepPointer gameTimerAddress = new DeepPointer("stvoy.exe", 0x641C14, 0x510);
 
 
         // longest map name is forgeboss
@@ -55,8 +51,8 @@ namespace LiveSplit.StVoyEf
 
         private void UpdateMap()
         {
-            string map = mapAddress.Deref(gameProcess, MAX_MAP_LENGTH);
-            if (map.Length > 0 && map != CurrMap)
+            string map;
+            if (mapAddress.Deref(gameProcess, out map, MAX_MAP_LENGTH) && map.Length > 0 && map != CurrMap)
             {
                 PrevMap = CurrMap;
                 CurrMap = map;
@@ -67,7 +63,11 @@ namespace LiveSplit.StVoyEf
         public void Update()
         {
             PrevGameState = CurrGameState;
-            CurrGameState = gameStateAddress.Deref(gameProcess);
+            int currGameState;
+            if (gameStateAddress.Deref(gameProcess, out currGameState))
+            {
+                CurrGameState = currGameState;
+            }
 
             if (PrevGameState != CurrGameState)
             {
