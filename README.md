@@ -3,9 +3,9 @@ LiveSplit.StVoyEf
 
 LiveSplit auto splitter for Star Trek: Voyager - Elite Force. Can also pause LiveSplits game timer while in loading screens.
 
-Manual Installation
--------------------
-Download "LiveSplit.StVoyEf.dll" and place it into the subdirectory "Components" of your LiveSplit folder. You can then add it to your layout (category "Control").
+Installation
+------------
+Enter "Star Trek: Voyager - Elite Force" in LiveSplit's splits editor and click activate.
 
 Usage
 -----
