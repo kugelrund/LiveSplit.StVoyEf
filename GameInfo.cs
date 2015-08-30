@@ -52,8 +52,8 @@ namespace LiveSplit.StVoyEf
 
         private void UpdateMap()
         {
-            string map;
-            if (mapAddress.Deref(gameProcess, out map, MAX_MAP_LENGTH) && map.Length > 0 && map != CurrMap)
+            string map = mapAddress.DerefString(gameProcess, MAX_MAP_LENGTH);
+            if (map != null && map != CurrMap)
             {
                 PrevMap = CurrMap;
                 CurrMap = map;

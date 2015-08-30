@@ -1,7 +1,6 @@
 ﻿using LiveSplit.Model;
 using LiveSplit.UI.Components;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Xml;
@@ -39,7 +38,7 @@ namespace LiveSplit.StVoyEf
             if (gameProcess != null && !gameProcess.HasExited)
             {
                 info.Update();
-                if (eventList[state.CurrentSplitIndex + 1].HasOccured(info))
+                if (state.CurrentSplitIndex + 1 < eventList.Length && eventList[state.CurrentSplitIndex + 1].HasOccured(info))
                 {
                     if (state.CurrentPhase == TimerPhase.NotRunning)
                     {
