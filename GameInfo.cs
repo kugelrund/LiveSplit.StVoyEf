@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using LiveSplit.ComponentUtil;
+using System.Windows.Forms;
 
 namespace LiveSplit.StVoyEf
 {
@@ -15,11 +16,11 @@ namespace LiveSplit.StVoyEf
         // 6 - end loading state (directly after loading)
         // 7 - in game
         // 8 - videos when starting the game
-        private static readonly DeepPointer gameStateAddress = new DeepPointer(0xB9E78);
+        private DeepPointer gameStateAddress;
 
-        private static readonly DeepPointer mapAddress = new DeepPointer(0x1B709D);
+        private DeepPointer mapAddress;
 
-        private static readonly DeepPointer vorsothHealthAddress = new DeepPointer(0x641C28, 0x7A04);
+        private DeepPointer vorsothHealthAddress;
 
 
 
@@ -27,6 +28,7 @@ namespace LiveSplit.StVoyEf
         private const int MAX_MAP_LENGTH = 13;
 
         private Process gameProcess;
+        private GameVersion gameVersion;
 
         public int PrevGameState { get; private set; }
         public int CurrGameState { get; private set; }
@@ -48,6 +50,35 @@ namespace LiveSplit.StVoyEf
         public GameInfo(Process gameProcess)
         {
             this.gameProcess = gameProcess;
+
+            if (gameProcess.MainModuleWow64Safe().ModuleMemorySize == 6635520)
+            {
+                gameVersion = GameVersion.v11;
+            }
+            else if (gameProcess.MainModuleWow64Safe().ModuleMemorySize == 7524352)
+            {
+                gameVersion = GameVersion.v12;
+            }
+            else
+            {
+                MessageBox.Show("Unsupported game version", "LiveSplit.StVoyEf",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                gameVersion = GameVersion.v11;
+            }
+
+            switch (gameVersion)
+            {
+                case GameVersion.v11:
+                    gameStateAddress = new DeepPointer(0xC52D8);
+                    mapAddress = new DeepPointer(0x1C14FD);
+                    vorsothHealthAddress = new DeepPointer(0x424B4, 0x3114);
+                    break;
+                case GameVersion.v12:
+                    gameStateAddress = new DeepPointer(0xB9E78);
+                    mapAddress = new DeepPointer(0x1B709D);
+                    vorsothHealthAddress = new DeepPointer(0x641C28, 0x7A04);
+                    break;
+            }
         }
 
         private void UpdateMap()
@@ -312,5 +343,11 @@ namespace LiveSplit.StVoyEf
         {
             return false;
         }
+    }
+
+    public enum GameVersion
+    {
+        v11, // latest version of original Quake II Pro release, build from Dec 3 2014
+        v12  // first release of modified Q2PRO, build from Jan 12 2016
     }
 }
