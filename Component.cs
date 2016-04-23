@@ -59,7 +59,7 @@ namespace LiveSplit.StVoyEf
             else
             {
                 gameProcess = Process.GetProcessesByName("stvoy").FirstOrDefault();
-                if (gameProcess != null)
+                if (gameProcess != null && !gameProcess.HasExited)
                 {
                     info = new GameInfo(gameProcess);
                 }

@@ -347,7 +347,7 @@ namespace LiveSplit.StVoyEf
 
     public enum GameVersion
     {
-        v11, // latest version of original Quake II Pro release, build from Dec 3 2014
-        v12  // first release of modified Q2PRO, build from Jan 12 2016
+        v11, // patch 1.1
+        v12  // patch 1.2
     }
 }
