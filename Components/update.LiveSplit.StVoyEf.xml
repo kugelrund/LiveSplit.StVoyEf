@@ -1,42 +1,52 @@
 <updates>
-	<update version="1.5">
-        <files>
-            <file path="Components/LiveSplit.StVoyEf.dll" status="changed"/>
-        </files>
-        <changelog>
-            <change>
-                Fixed closing process being thought of as game start.
-            </change>
-        </changelog>
-    </update>
-    <update version="1.4">
-        <files>
-            <file path="Components/LiveSplit.StVoyEf.dll" status="changed"/>
-        </files>
-        <changelog>
-            <change>
-                Added support for v1.1
-            </change>
-        </changelog>
-    </update>
-    <update version="1.2">
-        <files>
-            <file path="Components/LiveSplit.StVoyEf.dll" status="changed"/>
-        </files>
-        <changelog>
-            <change>
-                Update for LiveSplit 1.6.
-            </change>
-        </changelog>
-    </update>
-    <update version="1.0">
-        <files>
-            <file path="Components/LiveSplit.StVoyEf.dll" status="changed"/>
-        </files>
-        <changelog>
-            <change>
-                Initial release.
-            </change>
-        </changelog>
-    </update>
+  <update version="1.6">
+    <files>
+      <file path="Components/LiveSplit.StVoyEf.dll" status="changed"/>
+    </files>
+    <changelog>
+      <change>
+        Fixed closing process being thought of as game start.
+      </change>
+    </changelog>
+  </update>
+  <update version="1.5">
+    <files>
+      <file path="Components/LiveSplit.StVoyEf.dll" status="changed"/>
+    </files>
+    <changelog>
+      <change>
+        Fixed closing process being thought of as game start.
+      </change>
+    </changelog>
+  </update>
+  <update version="1.4">
+    <files>
+      <file path="Components/LiveSplit.StVoyEf.dll" status="changed"/>
+    </files>
+    <changelog>
+      <change>
+        Added support for v1.1
+      </change>
+    </changelog>
+  </update>
+  <update version="1.2">
+    <files>
+      <file path="Components/LiveSplit.StVoyEf.dll" status="changed"/>
+    </files>
+    <changelog>
+      <change>
+        Update for LiveSplit 1.6.
+      </change>
+    </changelog>
+  </update>
+  <update version="1.0">
+    <files>
+      <file path="Components/LiveSplit.StVoyEf.dll" status="changed"/>
+    </files>
+    <changelog>
+      <change>
+        Initial release.
+      </change>
+    </changelog>
+  </update>
 </updates>

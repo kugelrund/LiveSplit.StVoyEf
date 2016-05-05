@@ -26,10 +26,16 @@ namespace LiveSplit.StVoyEf
 
         // longest map name is forgeboss
         private const int MAX_MAP_LENGTH = 13;
-
         private Process gameProcess;
         private GameVersion gameVersion;
 
+        public Process GameProcess
+        {
+            get
+            {
+                return gameProcess;
+            }
+        }
         public int PrevGameState { get; private set; }
         public int CurrGameState { get; private set; }
         public string PrevMap { get; private set; }

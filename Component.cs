@@ -11,8 +11,7 @@ namespace LiveSplit.StVoyEf
     {
         private Settings settings = new Settings();
         private TimerModel model = null;
-
-        private Process gameProcess = null;
+        
         private GameInfo info = null;
         private GameEvent[] eventList = null;
         
@@ -33,9 +32,9 @@ namespace LiveSplit.StVoyEf
             model.InitializeGameTime();
         }
 
-        public override void Update(UI.IInvalidator invalidator, Model.LiveSplitState state, float width, float height, UI.LayoutMode mode)
+        public override void Update(UI.IInvalidator invalidator, LiveSplitState state, float width, float height, UI.LayoutMode mode)
         {
-            if (gameProcess != null && !gameProcess.HasExited)
+            if (info != null && !info.GameProcess.HasExited)
             {
                 info.Update();
                 if (state.CurrentSplitIndex + 1 < eventList.Length && eventList[state.CurrentSplitIndex + 1].HasOccured(info))
@@ -58,10 +57,14 @@ namespace LiveSplit.StVoyEf
             }
             else
             {
-                gameProcess = Process.GetProcessesByName("stvoy").FirstOrDefault();
+                Process gameProcess = Process.GetProcessesByName("stvoy").FirstOrDefault();
                 if (gameProcess != null && !gameProcess.HasExited)
                 {
                     info = new GameInfo(gameProcess);
+                }
+                else
+                {
+                    info = null;
                 }
             }
         }
