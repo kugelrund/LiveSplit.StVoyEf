@@ -1,4 +1,14 @@
 <updates>
+  <update version="1.7">
+    <files>
+      <file path="Components/LiveSplit.StVoyEf.dll" status="changed"/>
+    </files>
+    <changelog>
+      <change>
+        Added expansion pack maps.
+      </change>
+    </changelog>
+  </update>
   <update version="1.6">
     <files>
       <file path="Components/LiveSplit.StVoyEf.dll" status="changed"/>

@@ -22,10 +22,11 @@ namespace LiveSplit.StVoyEf
 
         private DeepPointer vorsothHealthAddress;
 
+        private DeepPointer inMenu;
 
 
-        // longest map name is forgeboss
-        private const int MAX_MAP_LENGTH = 13;
+        
+        private const int MAX_MAP_LENGTH = 25;
         private Process gameProcess;
         private GameVersion gameVersion;
 
@@ -38,6 +39,7 @@ namespace LiveSplit.StVoyEf
         }
         public int PrevGameState { get; private set; }
         public int CurrGameState { get; private set; }
+        public bool InMenu { get; private set; }
         public string PrevMap { get; private set; }
         public string CurrMap { get; private set; }
         public int CurrVorsothHealth 
@@ -78,11 +80,13 @@ namespace LiveSplit.StVoyEf
                     gameStateAddress = new DeepPointer(0xC52D8);
                     mapAddress = new DeepPointer(0x1C14FD);
                     vorsothHealthAddress = new DeepPointer(0x424B4, 0x3114);
+                    inMenu = new DeepPointer(0x269570);
                     break;
                 case GameVersion.v12:
                     gameStateAddress = new DeepPointer(0xB9E78);
                     mapAddress = new DeepPointer(0x1B709D);
                     vorsothHealthAddress = new DeepPointer(0x641C28, 0x7A04);
+                    inMenu = new DeepPointer(0x269570);
                     break;
             }
         }
@@ -105,6 +109,12 @@ namespace LiveSplit.StVoyEf
             if (gameStateAddress.Deref(gameProcess, out currGameState))
             {
                 CurrGameState = currGameState;
+            }
+
+            int currInMenu;
+            if (inMenu.Deref(gameProcess, out currInMenu))
+            {
+                InMenu = (currInMenu != 0);
             }
 
             if (PrevGameState != CurrGameState)
@@ -226,7 +236,33 @@ namespace LiveSplit.StVoyEf
                     new VorsothDeadEvent(),
                     new FinishedMapEvent("forgeboss.bsp"),
                     new LoadedMapEvent("voy20.bsp"),
-                    new FinishedMapEvent("voy20.bsp")
+                    new FinishedMapEvent("voy20.bsp"),
+                    new LoadedMapEvent("_holodeck_proton.bsp"),
+                    new FinishedMapEvent("_holodeck_proton.bsp"),
+                    new LoadedMapEvent("_holodeck_proton2.bsp"),
+                    new FinishedExpMapEvent("_holodeck_proton2.bsp"),
+                    new LoadedMapEvent("_holodeck_warlord.bsp"),
+                    new FinishedExpMapEvent("_holodeck_warlord.bsp"),
+                    new LoadedMapEvent("_holodeck_minigame.bsp"),
+                    new FinishedMapEvent("_holodeck_minigame.bsp"),
+                    new LoadedMapEvent("tour/deck02.bsp"),
+                    new FinishedMapEvent("tour/deck02.bsp"),
+                    new LoadedMapEvent("tour/deck09.bsp"),
+                    new FinishedMapEvent("tour/deck09.bsp"),
+                    new LoadedMapEvent("tour/deck10.bsp"),
+                    new FinishedMapEvent("tour/deck10.bsp"),
+                    new LoadedMapEvent("tour/deck08.bsp"),
+                    new FinishedMapEvent("tour/deck08.bsp"),
+                    new LoadedMapEvent("tour/deck03.bsp"),
+                    new FinishedMapEvent("tour/deck03.bsp"),
+                    new LoadedMapEvent("tour/deck05.bsp"),
+                    new FinishedMapEvent("tour/deck05.bsp"),
+                    new LoadedMapEvent("tour/deck11.bsp"),
+                    new FinishedMapEvent("tour/deck11.bsp"),
+                    new LoadedMapEvent("tour/deck04.bsp"),
+                    new FinishedMapEvent("tour/deck04.bsp"),
+                    new LoadedMapEvent("tour/deck15.bsp"),
+                    new FinishedMapEvent("tour/deck15.bsp"),
                     #endregion
                 };
                 for (int i = 0; i < eventList.Length; ++i)
@@ -304,6 +340,23 @@ namespace LiveSplit.StVoyEf
         public override bool HasOccured(GameInfo info)
         {
             return info.MapChanged && (info.CurrMap != map) && (info.PrevMap == map);
+        }
+
+        public override string ToString()
+        {
+            return "Finished '" + map + "'";
+        }
+    }
+
+    class FinishedExpMapEvent : MapEvent
+    {
+        public override string Id { get { return "finished_expmap_" + map; } }
+
+        public FinishedExpMapEvent(string map) : base(map) { }
+
+        public override bool HasOccured(GameInfo info)
+        {
+            return info.CurrMap == map && info.InMenu;
         }
 
         public override string ToString()
