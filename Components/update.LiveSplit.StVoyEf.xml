@@ -1,5 +1,5 @@
 <updates>
-  <update version="1.8">
+  <update version="1.9">
     <files>
       <file path="Components/LiveSplit.StVoyEf.dll" status="changed"/>
     </files>
