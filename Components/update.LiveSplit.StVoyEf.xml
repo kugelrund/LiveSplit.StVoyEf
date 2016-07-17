@@ -5,6 +5,19 @@
     </files>
     <changelog>
       <change>
+        Added support for naming stvoy.exe quake3.exe.
+      </change>
+      <change>
+        Fixed process-start recognition.
+      </change>
+    </changelog>
+  </update>
+  <update version="1.8">
+    <files>
+      <file path="Components/LiveSplit.StVoyEf.dll" status="changed"/>
+    </files>
+    <changelog>
+      <change>
         Reworked settings for maximum flexibility, especially with custom maps.
       </change>
     </changelog>

@@ -14,7 +14,7 @@ namespace LiveSplit.StVoyEf
         public override Type[] EventTypes => eventTypes;
 
         public override string Name => "Star Trek: Voyager - Elite Force";
-        public override string ProcessName => "stvoy";
+        public override string[] ProcessNames => new string[] { "quake3", "stvoy" };
 
         public override GameEvent ReadLegacyEvent(string id)
         {
@@ -222,11 +222,19 @@ namespace LiveSplit.ComponentAutosplitter
 
         partial void GetVersion()
         {
-            if (gameProcess.MainModuleWow64Safe().ModuleMemorySize == 6635520)
+            ProcessModuleWow64Safe mainModule = gameProcess.MainModuleWow64Safe();
+            if (!mainModule.ModuleName.EndsWith(".exe"))
+            {
+                // kind of a workaround for MainModuleWow64Safe maybe not returning
+                // the correct module
+                throw new ArgumentException("Process not initialised yet!");
+            }
+
+            if (mainModule.ModuleMemorySize == 6635520)
             {
                 gameVersion = GameVersion.v11;
             }
-            else if (gameProcess.MainModuleWow64Safe().ModuleMemorySize == 7524352)
+            else if (mainModule.ModuleMemorySize == 7524352)
             {
                 gameVersion = GameVersion.v12;
             }
