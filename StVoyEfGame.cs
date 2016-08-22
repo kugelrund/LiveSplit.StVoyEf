@@ -50,17 +50,8 @@ namespace LiveSplit.StVoyEf
         }
     }
 
-    class StartedGameEvent : GameEvent
+    class StartedGameEvent : NoAttributeEvent
     {
-        private static readonly string[] attributeNames = new string[] { };
-        private static string[] attributeValues = new string[] { };
-
-        public override string[] AttributeNames => attributeNames;
-        public override string[] AttributeValues
-        {
-            get { return attributeValues; }
-            protected set { attributeValues = value; }
-        }
         public override string Description => "The single player mission got started.";
 
         public override bool HasOccured(GameInfo info)
@@ -139,17 +130,8 @@ namespace LiveSplit.StVoyEf
         }
     }
 
-    class VorsothDeadEvent : GameEvent
+    class VorsothDeadEvent : NoAttributeEvent
     {
-        private static readonly string[] attributeNames = new string[] { };
-        private static string[] attributeValues = new string[] { };
-
-        public override string[] AttributeNames => attributeNames;
-        public override string[] AttributeValues
-        {
-            get { return attributeValues; }
-            protected set { attributeValues = value; }
-        }
         public override string Description => "Vorsoth was killed.";
         private int prevVorsothHealth = -1;
 
