@@ -272,7 +272,7 @@ namespace LiveSplit.ComponentAutosplitter
 
         private void UpdateMap()
         {
-            StringBuilder mapStringBuilder = new StringBuilder();
+            StringBuilder mapStringBuilder = new StringBuilder(16);
             if (gameProcess.ReadString(baseAddress + mapAddress, mapStringBuilder) &&
                 mapStringBuilder.ToString() != CurrMap)
             {
