@@ -15,6 +15,8 @@ namespace LiveSplit.StVoyEf
 
         public override string Name => "Star Trek: Voyager - Elite Force";
         public override string[] ProcessNames => new string[] { "quake3", "stvoy" };
+        public override bool GameTimeExists => false;
+        public override bool LoadRemovalExists => true;
 
         public override GameEvent ReadLegacyEvent(string id)
         {
@@ -65,7 +67,28 @@ namespace LiveSplit.StVoyEf
         }
     }
 
-    class LoadedMapEvent : MapEvent
+    abstract class StVoyEfMapEvent : MapEvent
+    {
+        public StVoyEfMapEvent() : base()
+        {
+        }
+
+        public StVoyEfMapEvent(string map)
+        {
+            if (map.EndsWith(".bsp"))
+            {
+                this.map = map;
+            }
+            else
+            {
+                this.map = map + ".bsp";
+            }
+
+            attributeValues = new string[] { this.map };
+        }
+    }
+
+    class LoadedMapEvent : StVoyEfMapEvent
     {
         public override string Description => "A certain map was loaded.";
 
@@ -89,7 +112,7 @@ namespace LiveSplit.StVoyEf
         }
     }
 
-    class FinishedMapEvent : MapEvent
+    class FinishedMapEvent : StVoyEfMapEvent
     {
         public override string Description => "A certain map was finished.";
 
@@ -272,7 +295,7 @@ namespace LiveSplit.ComponentAutosplitter
 
         private void UpdateMap()
         {
-            StringBuilder mapStringBuilder = new StringBuilder(16);
+            StringBuilder mapStringBuilder = new StringBuilder(32);
             if (gameProcess.ReadString(baseAddress + mapAddress, mapStringBuilder) &&
                 mapStringBuilder.ToString() != CurrMap)
             {
