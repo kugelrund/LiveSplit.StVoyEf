@@ -205,6 +205,7 @@ namespace LiveSplit.ComponentAutosplitter
         private Int32 gameStateAddress;
         private Int32 mapAddress;
         private Int32 inMenuAddress;
+        private DeepPointer skippingCinematicAddress;
         private DeepPointer vorsothHealthAddress;
 
         private GameVersion gameVersion;
@@ -255,12 +256,14 @@ namespace LiveSplit.ComponentAutosplitter
                 case GameVersion.v11:
                     gameStateAddress = 0xC52D8;
                     mapAddress = 0x1C14FD;
+                    skippingCinematicAddress = new DeepPointer(0x17F474, 0x20);
                     vorsothHealthAddress = new DeepPointer(0x424B4, 0x3114);
                     inMenuAddress = 0x269570;
                     break;
                 case GameVersion.v12:
                     gameStateAddress = 0xB9E78;
                     mapAddress = 0x1B709D;
+                    skippingCinematicAddress = new DeepPointer(0x174014, 0x20);
                     vorsothHealthAddress = new DeepPointer(0x641C28, 0x7A04);
                     inMenuAddress = 0x269570;
                     break;
@@ -285,11 +288,20 @@ namespace LiveSplit.ComponentAutosplitter
             if (PrevGameState != CurrGameState)
             {
                 UpdateMap();
-                InGame = (CurrGameState == StVoyEfState.InGame);
             }
             else
             {
                 MapChanged = false;
+            }
+
+            InGame = (CurrGameState == StVoyEfState.InGame);
+            if (InGame)
+            {
+                bool skippingCinematic = false;
+                if (skippingCinematicAddress.Deref(gameProcess, out skippingCinematic) && skippingCinematic)
+                {
+                    InGame = false;
+                }
             }
         }
 

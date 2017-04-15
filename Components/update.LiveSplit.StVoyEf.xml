@@ -1,4 +1,14 @@
 <updates>
+  <update version="1.10">
+    <files>
+      <file path="Components/LiveSplit.StVoyEf.dll" status="changed"/>
+    </files>
+    <changelog>
+      <change>
+        Now pausing GameTime when skipping cinematics as different framerates make these skips take different amounts of time.
+      </change>
+    </changelog>
+  </update>
   <update version="1.9">
     <files>
       <file path="Components/LiveSplit.StVoyEf.dll" status="changed"/>
