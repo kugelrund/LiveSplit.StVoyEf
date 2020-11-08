@@ -1,4 +1,14 @@
 <updates>
+  <update version="1.11">
+    <files>
+      <file path="Components/LiveSplit.StVoyEf.dll" status="changed"/>
+    </files>
+    <changelog>
+      <change>
+        Fix "holodeck map finished" event not working properly.
+      </change>
+    </changelog>
+  </update>
   <update version="1.10">
     <files>
       <file path="Components/LiveSplit.StVoyEf.dll" status="changed"/>

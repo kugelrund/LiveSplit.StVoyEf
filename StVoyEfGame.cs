@@ -263,14 +263,14 @@ namespace LiveSplit.ComponentAutosplitter
                     mapAddress = 0x1C14FD;
                     skippingCinematicAddress = new DeepPointer(0x17F474, 0x20);
                     vorsothHealthAddress = new DeepPointer(0x424B4, 0x3114);
-                    inMenuAddress = 0x269570;
+                    inMenuAddress = 0x2697C8;
                     break;
                 case GameVersion.v12:
                     gameStateAddress = 0xB9E78;
                     mapAddress = 0x1B709D;
                     skippingCinematicAddress = new DeepPointer(0x174014, 0x20);
                     vorsothHealthAddress = new DeepPointer(0x641C28, 0x7A04);
-                    inMenuAddress = 0x269570;
+                    inMenuAddress = 0x2697C8;
                     break;
             }
         }
