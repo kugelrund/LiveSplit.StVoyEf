@@ -151,6 +151,11 @@ namespace LiveSplit.StVoyEf
         {
             return info.CurrMap == map && info.InMenu;
         }
+
+        public override string ToString()
+        {
+            return "Holodeck map '" + map + "' was finished";
+        }
     }
 
     class VorsothDeadEvent : NoAttributeEvent
